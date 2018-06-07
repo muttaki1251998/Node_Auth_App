@@ -1,28 +1,29 @@
-const mongoose = require("mongoose");
+const express = require("express");
+const bodyParser = require("body-parser");
 
-mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/auth");
+var {mongoose} = require("./db/mongoose");
+var {Todo} = require("./models/todo");
+var {User} = require("./models/user");
 
-var todo = mongoose.model("Todo", {
-    text : {
-        type: String
-    },
-    completed: {
-        type: Boolean
-    },
-    completedAt: {
-        type: Number
-    }
-});
+//app init
+var app = express();
 
-var newTodo = new todo({
-    text: "I need to have lunch",
-    completed: false,
-    completedAt: 12
-});
+//body-parser mw
+app.use(bodyParser.json());
 
-newTodo.save().then((data) => {
-    console.log(JSON.stringify(data, undefined, 2));
-}, (er) => {
-    console.log("Data couldnt be saved. Error finding database", er);
-});
+app.post('/todos', (req, res) => {   
+    var todo = new Todo({
+        text: req.body.text
+    });
+
+    todo.save().then((doc) => {
+        res.send(doc);
+    }, (err) => {
+        res.status(400).send(err);
+    })
+})
+
+var port = 3000;
+app.listen(port, () => {
+    console.log("Server started on port " + port);
+})
