@@ -1,8 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-
-
 //app init
 var app = express();
 
@@ -11,9 +9,11 @@ app.use(bodyParser.json());
 
 // Set express routes
 var todoRoute = require("./routes/todoRoutes");
+var userRoute = require("./routes/userRoutes");
 
 // Set location
 app.use("/todos", todoRoute);
+app.use("/users", userRoute);
 
 module.exports = app;
 

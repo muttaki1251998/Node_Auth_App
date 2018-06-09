@@ -4,7 +4,6 @@ const _ = require("lodash");
 
 var {mongoose} = require("../db/mongoose");
 var {Todo} = require("../models/todo");
-var {User} = require("../models/user");
 var {ObjectID} = require("mongodb");
 
 router.get('/todos/:id', (req, res) => {
